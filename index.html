@@ -14,18 +14,18 @@
         }
         
         body {
-            background: #0a0a0a;
-            color: #e0e0e0;
+            background: #ffffff;
+            color: #1a1a1a;
         }
         
-        /* Brutalist Design Elements */
+        /* Brutalist Design Elements - Light Mode */
         .brutal-border {
-            border: 3px solid #fff;
-            box-shadow: 8px 8px 0 #333;
+            border: 3px solid #000;
+            box-shadow: 8px 8px 0 #e0e0e0;
         }
         
         .brutal-btn {
-            border: 3px solid #fff;
+            border: 3px solid #000;
             background: #000;
             color: #fff;
             font-weight: 700;
@@ -37,15 +37,16 @@
         }
         
         .brutal-btn:hover {
-            background: #fff;
-            color: #000;
+            background: #10b981;
+            border-color: #10b981;
+            color: #fff;
             transform: translate(-4px, -4px);
-            box-shadow: 12px 12px 0 #666;
+            box-shadow: 12px 12px 0 #cbd5e1;
         }
         
         .brutal-btn:active {
             transform: translate(0, 0);
-            box-shadow: 4px 4px 0 #666;
+            box-shadow: 4px 4px 0 #cbd5e1;
         }
         
         .status-lamp {
@@ -64,7 +65,7 @@
             height: 24px;
             background: linear-gradient(to right, #10b981 0%, #f59e0b 50%, #ef4444 100%);
             position: relative;
-            border: 2px solid #fff;
+            border: 2px solid #000;
         }
         
         .risk-indicator {
@@ -72,14 +73,14 @@
             top: -8px;
             width: 4px;
             height: 40px;
-            background: #fff;
-            box-shadow: 0 0 10px #fff;
+            background: #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
             transition: left 1s ease-out;
         }
         
         .xai-toggle {
-            background: #1a1a1a;
-            border: 2px solid #444;
+            background: #f8f9fa;
+            border: 2px solid #cbd5e1;
             padding: 16px;
             margin-top: 16px;
             display: none;
@@ -91,7 +92,7 @@
         
         .calculation-step {
             font-family: 'IBM Plex Mono', monospace;
-            background: #0a0a0a;
+            background: #ffffff;
             border-left: 4px solid #10b981;
             padding: 12px;
             margin: 8px 0;
@@ -102,20 +103,21 @@
             top: 20px;
             right: 20px;
             background: #10b981;
-            color: #000;
+            color: #fff;
             padding: 12px 20px;
-            border: 3px solid #fff;
+            border: 3px solid #000;
             font-weight: 700;
             z-index: 1000;
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
         }
         
         .loading-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             display: none;
             justify-content: center;
             align-items: center;
@@ -132,6 +134,7 @@
             font-weight: 700;
             margin-top: 20px;
             animation: loadingPulse 1.5s infinite;
+            color: #1a1a1a;
         }
         
         @keyframes loadingPulse {
@@ -152,8 +155,8 @@
         }
         
         .question-card {
-            background: #1a1a1a;
-            border: 3px solid #333;
+            background: #ffffff;
+            border: 3px solid #e5e7eb;
             padding: 32px;
             margin-bottom: 24px;
             transition: border-color 0.3s;
@@ -164,8 +167,8 @@
         }
         
         .option-btn {
-            background: #0a0a0a;
-            border: 2px solid #444;
+            background: #f9fafb;
+            border: 2px solid #cbd5e1;
             padding: 16px;
             margin: 8px 0;
             cursor: pointer;
@@ -175,16 +178,16 @@
         
         .option-btn:hover {
             border-color: #10b981;
-            background: #1a1a1a;
+            background: #f0fdf4;
         }
         
         .option-btn.selected {
             border-color: #10b981;
-            background: #10b98120;
+            background: #d1fae5;
         }
         
         .prescription-card {
-            background: #1a1a1a;
+            background: #ffffff;
             border: 4px solid #ef4444;
             padding: 32px;
             margin: 24px 0;
@@ -241,15 +244,15 @@
         }
         
         .knowledge-panel {
-            background: #1a1a1a;
-            border-left: 4px solid #3b82f6;
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
             padding: 20px;
             margin: 16px 0;
         }
         
         .formula-display {
-            background: #0a0a0a;
-            border: 2px solid #444;
+            background: #f9fafb;
+            border: 2px solid #cbd5e1;
             padding: 20px;
             margin: 16px 0;
             font-family: 'IBM Plex Mono', monospace;
@@ -258,7 +261,7 @@
         
         .progress-bar {
             height: 4px;
-            background: #333;
+            background: #e5e7eb;
             position: fixed;
             top: 0;
             left: 0;
@@ -299,14 +302,14 @@
             <div class="flex items-center justify-center gap-4 mb-6">
                 <i class="fas fa-shield-alt text-6xl text-green-500"></i>
             </div>
-            <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tight">
+            <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tight text-gray-900">
                 AEGIS
             </h1>
-            <p class="text-xl md:text-2xl text-gray-400 font-bold uppercase tracking-widest">
+            <p class="text-xl md:text-2xl text-gray-600 font-bold uppercase tracking-widest">
                 未払い報酬・デジタル遺産解析エンジン
             </p>
-            <div class="mt-8 border-t-2 border-b-2 border-gray-700 py-4">
-                <p class="text-sm text-gray-500 uppercase tracking-wider">
+            <div class="mt-8 border-t-2 border-b-2 border-gray-300 py-4">
+                <p class="text-sm text-gray-600 uppercase tracking-wider">
                     完全Edge処理 / サーバー送信0 / 2026年法規制対応
                 </p>
             </div>
@@ -386,23 +389,23 @@
                 <div class="sticky top-4">
                     <div class="knowledge-panel">
                         <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
-                            <i class="fas fa-book text-blue-500"></i>
+                            <i class="fas fa-book text-green-600"></i>
                             弁護士監修コラム
                         </h3>
                         <div id="knowledgeContent">
-                            <p class="text-gray-400 text-sm leading-relaxed">
+                            <p class="text-gray-700 text-sm leading-relaxed">
                                 診断を開始すると、各質問に関連する法的情報が表示されます。
                             </p>
                         </div>
                     </div>
                     
                     <!-- Legal Notice -->
-                    <div class="mt-6 p-6 bg-gray-900 border-2 border-gray-700">
-                        <h4 class="text-sm font-bold mb-2 text-yellow-500">
+                    <div class="mt-6 p-6 bg-yellow-50 border-2 border-yellow-400">
+                        <h4 class="text-sm font-bold mb-2 text-yellow-800">
                             <i class="fas fa-exclamation-triangle mr-2"></i>
                             法的免責事項
                         </h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">
+                        <p class="text-xs text-gray-700 leading-relaxed">
                             本ツールは2025年法務省見解に基づき、情報提供のみを目的としています。個別の法的鑑定・判断を行うものではありません。具体的な法的問題については、必ず専門家にご相談ください。
                         </p>
                     </div>
@@ -411,11 +414,11 @@
         </div>
         
         <!-- Footer -->
-        <footer class="mt-24 pt-12 border-t-2 border-gray-800 text-center">
-            <p class="text-gray-600 text-sm mb-4">
+        <footer class="mt-24 pt-12 border-t-2 border-gray-300 text-center">
+            <p class="text-gray-700 text-sm mb-4">
                 © 2026 AEGIS by Enable Inc. | Powered by Edge AI (WASM/JS)
             </p>
-            <p class="text-gray-700 text-xs">
+            <p class="text-gray-600 text-xs">
                 データは全てブラウザ内で処理され、サーバーに送信されません。
             </p>
         </footer>
@@ -434,8 +437,8 @@
                     { value: 0.4, label: '契約書なし', weight: 'legal' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">契約書の法的効力（2026年民法改正対応）</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">契約書の法的効力（2026年民法改正対応）</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         2026年改正民法632条により、業務委託契約は「書面または電磁的記録」での保存が義務化されました。
                         口頭契約は有効ですが、紛争時の立証責任が発注者側に転換されるため、契約書締結が推奨されます。
                     </p>
@@ -454,8 +457,8 @@
                     { value: 1.0, label: '1ヶ月以上の遅延常態化', weight: 'credit' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">支払遅延と法的措置</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">支払遅延と法的措置</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         フリーランス保護法第5条により、60日を超える支払遅延は「著しく不当な取引」とみなされます。
                         遅延日数×年14.6%の遅延損害金請求が可能です（商事法定利率）。
                     </p>
@@ -474,8 +477,8 @@
                     { value: 1.0, label: 'スタートアップ・個人事業主', weight: 'credit' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">発注者の信用調査義務</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">発注者の信用調査義務</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         2026年税制改正により、フリーランスは「受注時の信用調査」を実施した場合、
                         未払いリスクに対する損失を「貸倒引当金」として経費計上できます（青色申告特例）。
                     </p>
@@ -491,8 +494,8 @@
                     { value: 1.0, label: '管理していない', weight: 'process' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">電子帳簿保存法（2026年完全義務化）</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">電子帳簿保存法（2026年完全義務化）</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         2026年1月より、請求書の電子保存が完全義務化されました。
                         検索機能要件（取引先・金額・日付）を満たさない保存方法は、税務調査時に証拠能力を失います。
                     </p>
@@ -508,8 +511,8 @@
                     { value: 1.0, label: '保存していない', weight: 'process' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">電子証拠の法的証拠能力</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">電子証拠の法的証拠能力</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         民事訴訟法228条の4により、メール・チャットログは「タイムスタンプ」がある場合、
                         書証として高い証拠能力を持ちます。Slackの有料プランなど、監査ログ機能の利用を推奨します。
                     </p>
@@ -525,8 +528,8 @@
                     { value: 1000, label: '500万円以上', weight: 'digital' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">デジタル遺産の相続税評価（2026年税制）</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">デジタル遺産の相続税評価（2026年税制）</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         2026年税制改正により、暗号資産・NFT・ドメインなどのデジタル資産は「時価の80%」で評価されます。
                         アクセス権限の喪失による「無価値化リスク」を20%割り引く考え方です。
                     </p>
@@ -542,8 +545,8 @@
                     { value: 1.0, label: '記憶のみ', weight: 'digital' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">デジタル遺産の承継手続き</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">デジタル遺産の承継手続き</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         2025年最高裁判例により、パスワードを遺言書に記載しても「秘密保持義務違反」とはなりません。
                         ただし、公正証書遺言の場合は「デジタル遺産管理信託」の利用が推奨されます。
                     </p>
@@ -559,8 +562,8 @@
                     { value: 1.0, label: '未対策', weight: 'digital' }
                 ],
                 knowledge: `
-                    <h4 class="font-bold mb-2 text-blue-400">デジタル遺産放棄のリスク</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                    <h4 class="font-bold mb-2 text-green-700">デジタル遺産放棄のリスク</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
                         相続人がデジタル資産の存在を知らず「相続放棄」した場合、資産は永久に失われます。
                         2026年民法改正により、デジタル資産目録の作成が「善管注意義務」に含まれるようになりました。
                     </p>
@@ -737,9 +740,9 @@
         function displayXAICalculations(K, C, P, S_unpaid, V, A, Pl, S_digital) {
             document.getElementById('unpaidCalculation').innerHTML = `
                 <div class="calculation-step">
-                    <p class="text-gray-400">K_legal (契約強度) = ${K.toFixed(2)}</p>
-                    <p class="text-gray-400">C_credit (信用リスク) = ${C.toFixed(2)}</p>
-                    <p class="text-gray-400">P_process (管理リスク) = ${P.toFixed(2)}</p>
+                    <p class="text-gray-700">K_legal (契約強度) = ${K.toFixed(2)}</p>
+                    <p class="text-gray-700">C_credit (信用リスク) = ${C.toFixed(2)}</p>
+                    <p class="text-gray-700">P_process (管理リスク) = ${P.toFixed(2)}</p>
                 </div>
                 <div class="calculation-step mt-2">
                     <p class="text-green-500">S_unpaid = 0.45 × ${K.toFixed(2)} + 0.35 × ${C.toFixed(2)} + 0.20 × ${P.toFixed(2)}</p>
@@ -750,10 +753,10 @@
             
             document.getElementById('digitalCalculation').innerHTML = `
                 <div class="calculation-step">
-                    <p class="text-gray-400">V (資産価値) = ${V}万円</p>
-                    <p class="text-gray-400">A (アクセス難易度) = ${A.toFixed(2)}</p>
-                    <p class="text-gray-400">Pl (計画性欠如) = ${Pl.toFixed(2)}</p>
-                    <p class="text-gray-400">税制係数 (2026年) = 0.8</p>
+                    <p class="text-gray-700">V (資産価値) = ${V}万円</p>
+                    <p class="text-gray-700">A (アクセス難易度) = ${A.toFixed(2)}</p>
+                    <p class="text-gray-700">Pl (計画性欠如) = ${Pl.toFixed(2)}</p>
+                    <p class="text-gray-700">税制係数 (2026年) = 0.8</p>
                 </div>
                 <div class="calculation-step mt-2">
                     <p class="text-green-500">S_digital = (${V} × 1/${A.toFixed(2)} × 1/${Pl.toFixed(2)} × 0.8) / 10</p>
@@ -781,7 +784,7 @@
                                 <i class="fas fa-exclamation-triangle mr-2"></i>
                                 重大なリスクが検出されました
                             </p>
-                            <p class="text-sm text-gray-400">
+                            <p class="text-sm text-gray-700">
                                 現在の状況では、法的紛争発生時の立証が困難です。
                                 専門家への相談を強く推奨します。
                             </p>
@@ -802,7 +805,7 @@
                                 <i class="fas fa-check-circle mr-2"></i>
                                 リスクは管理範囲内です
                             </p>
-                            <p class="text-sm text-gray-400">
+                            <p class="text-sm text-gray-700">
                                 現状の管理体制を継続しつつ、予防的対策を推奨します。
                             </p>
                         </div>
@@ -821,11 +824,11 @@
                     </p>
                     
                     <div class="mt-8 p-6 bg-gray-900 border-l-4 border-blue-500">
-                        <h4 class="font-bold mb-3 text-blue-400">
+                        <h4 class="font-bold mb-3 text-green-700">
                             <i class="fas fa-info-circle mr-2"></i>
                             なぜこの対策が必要なのか？
                         </h4>
-                        <ul class="text-sm text-gray-400 space-y-2">
+                        <ul class="text-sm text-gray-700 space-y-2">
                             <li>• <strong>未払いリスク ${Math.round(unpaidScore)}点</strong>：契約書・証拠保全の不備が検出されました</li>
                             <li>• <strong>デジタル遺産リスク ${Math.round(digitalScore)}点</strong>：承継計画の欠如により資産消失リスクがあります</li>
                             <li>• <strong>2026年法改正対応</strong>：フリーランス保護法の要件を満たしていない可能性があります</li>
