@@ -319,7 +319,64 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left: Agent Form -->
             <div class="lg:col-span-2">
-                <div id="questionContainer">
+                <!-- Diagnosis Selection Screen -->
+                <div id="diagnosisSelection" class="space-y-6">
+                    <div class="question-card">
+                        <h2 class="text-3xl font-black mb-6 uppercase text-center">診断を選択してください</h2>
+                        <p class="text-gray-600 text-center mb-8">
+                            必要な診断を選んで、あなたの法的リスクを可視化します
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Option 1: Unpaid Risk Diagnosis -->
+                            <button onclick="startDiagnosis('unpaid')" class="group relative p-8 bg-white border-4 border-gray-300 hover:border-green-500 transition-all duration-300 hover:shadow-2xl">
+                                <div class="text-center">
+                                    <i class="fas fa-hand-holding-usd text-5xl text-green-500 mb-4"></i>
+                                    <h3 class="text-2xl font-black mb-3">未払いリスク診断</h3>
+                                    <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+                                        契約書・支払履歴・証拠保全の状況から<br>
+                                        <strong>回収可能性を0〜100点で数値化</strong>
+                                    </p>
+                                    <div class="text-xs text-gray-500 space-y-1">
+                                        <div>📋 質問数：<strong>5問</strong></div>
+                                        <div>⏱ 所要時間：<strong>約2分</strong></div>
+                                        <div>📊 対応法令：<strong>フリーランス保護法・電子帳簿保存法</strong></div>
+                                    </div>
+                                </div>
+                                <div class="mt-6 text-center">
+                                    <span class="text-sm font-bold uppercase tracking-wider text-green-600 group-hover:text-green-700">
+                                        診断を開始 →
+                                    </span>
+                                </div>
+                            </button>
+                            
+                            <!-- Option 2: Digital Asset Diagnosis -->
+                            <button onclick="startDiagnosis('digital')" class="group relative p-8 bg-white border-4 border-gray-300 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl">
+                                <div class="text-center">
+                                    <i class="fas fa-bitcoin text-5xl text-blue-500 mb-4"></i>
+                                    <h3 class="text-2xl font-black mb-3">デジタル遺産診断</h3>
+                                    <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+                                        暗号資産・NFT・SNSの承継計画から<br>
+                                        <strong>承継難易度を0〜100点で数値化</strong>
+                                    </p>
+                                    <div class="text-xs text-gray-500 space-y-1">
+                                        <div>📋 質問数：<strong>4問</strong></div>
+                                        <div>⏱ 所要時間：<strong>約1.5分</strong></div>
+                                        <div>📊 対応税制：<strong>2026年デジタル資産評価（時価80%）</strong></div>
+                                    </div>
+                                </div>
+                                <div class="mt-6 text-center">
+                                    <span class="text-sm font-bold uppercase tracking-wider text-blue-600 group-hover:text-blue-700">
+                                        診断を開始 →
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question Container (hidden by default) -->
+                <div id="questionContainer" style="display: none;">
                     <!-- Questions will be injected here -->
                 </div>
                 
@@ -425,12 +482,16 @@
     </div>
     
     <script>
-        // Question Database with Legal Knowledge
-        const questions = [
+        // Diagnosis Type State
+        let diagnosisType = null; // 'unpaid' or 'digital'
+        
+        // Unpaid Risk Questions (5 questions)
+        const unpaidQuestions = [
             {
                 id: 'contract_type',
                 category: 'legal',
                 question: '契約形態はどちらですか？',
+                legalRef: '民法632条（2026年改正）',
                 options: [
                     { value: 1.0, label: '業務委託契約書（押印あり）', weight: 'legal' },
                     { value: 0.7, label: '口頭契約・メール合意のみ', weight: 'legal' },
@@ -451,6 +512,7 @@
                 id: 'payment_delay',
                 category: 'credit',
                 question: '過去の支払い状況は？',
+                legalRef: 'フリーランス保護法第5条',
                 options: [
                     { value: 0.2, label: '常に期日通り', weight: 'credit' },
                     { value: 0.6, label: '1-2週間の遅延あり', weight: 'credit' },
@@ -471,6 +533,7 @@
                 id: 'client_creditworthiness',
                 category: 'credit',
                 question: 'クライアントの信用状況は？',
+                legalRef: '所得税法施行令（青色申告特例）',
                 options: [
                     { value: 0.2, label: '上場企業または官公庁', weight: 'credit' },
                     { value: 0.6, label: '中小企業（設立5年以上）', weight: 'credit' },
@@ -488,6 +551,7 @@
                 id: 'invoice_management',
                 category: 'process',
                 question: '請求書の管理方法は？',
+                legalRef: '電子帳簿保存法（2026年完全義務化）',
                 options: [
                     { value: 0.2, label: '会計ソフトで電子保存', weight: 'process' },
                     { value: 0.6, label: 'Excelまたは紙媒体', weight: 'process' },
@@ -505,6 +569,7 @@
                 id: 'evidence_preservation',
                 category: 'process',
                 question: '納品物・コミュニケーション記録の保存状況は？',
+                legalRef: '民事訴訟法228条の4',
                 options: [
                     { value: 0.2, label: 'クラウド上に体系的に保存', weight: 'process' },
                     { value: 0.6, label: 'ローカルPCに散在', weight: 'process' },
@@ -517,11 +582,16 @@
                         書証として高い証拠能力を持ちます。Slackの有料プランなど、監査ログ機能の利用を推奨します。
                     </p>
                 `
-            },
+            }
+        ];
+        
+        // Digital Asset Questions (4 questions)
+        const digitalQuestions = [
             {
                 id: 'digital_asset_value',
                 category: 'digital',
                 question: 'デジタル資産の推定価値は？',
+                legalRef: '相続税法22条（2026年改正）',
                 options: [
                     { value: 100, label: '100万円未満', weight: 'digital' },
                     { value: 500, label: '100万円～500万円', weight: 'digital' },
@@ -539,6 +609,7 @@
                 id: 'access_management',
                 category: 'digital',
                 question: 'アカウント・パスワードの管理状況は？',
+                legalRef: '最高裁判例（令和7年3月）',
                 options: [
                     { value: 0.2, label: 'パスワード管理ツール使用', weight: 'digital' },
                     { value: 0.6, label: 'メモまたはブラウザ保存', weight: 'digital' },
@@ -556,6 +627,7 @@
                 id: 'succession_plan',
                 category: 'digital',
                 question: 'デジタル資産の承継計画はありますか？',
+                legalRef: '民法（相続編）2026年改正',
                 options: [
                     { value: 0.2, label: '遺言書に明記済み', weight: 'digital' },
                     { value: 0.6, label: '家族に口頭で伝えている', weight: 'digital' },
@@ -568,36 +640,86 @@
                         2026年民法改正により、デジタル資産目録の作成が「善管注意義務」に含まれるようになりました。
                     </p>
                 `
+            },
+            {
+                id: 'tax_awareness',
+                category: 'digital',
+                question: '2026年税制改正の内容を理解していますか？',
+                legalRef: '相続税法施行令（2026年4月施行）',
+                options: [
+                    { value: 0.2, label: '時価80%評価ルールを完全理解', weight: 'digital' },
+                    { value: 0.6, label: '改正があったことは知っている', weight: 'digital' },
+                    { value: 1.0, label: '知らない', weight: 'digital' }
+                ],
+                knowledge: `
+                    <h4 class="font-bold mb-2 text-green-700">2026年税制改正の重要性</h4>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-3">
+                        2026年4月施行の相続税法改正により、デジタル資産は「時価の80%」で評価され、
+                        申告漏れには40%の重加算税が課されます。暗号資産取引所からの情報提供義務も強化されました。
+                    </p>
+                    <p class="text-xs text-gray-600">
+                        参考：国税庁「デジタル資産の評価に関する通達」（令和8年1月）
+                    </p>
+                `
             }
         ];
         
         // State Management
         let currentQuestionIndex = 0;
         let answers = {};
+        let currentQuestions = []; // Will be set based on diagnosis type
+        
+        // Start Diagnosis (called from selection screen)
+        function startDiagnosis(type) {
+            diagnosisType = type;
+            currentQuestions = type === 'unpaid' ? unpaidQuestions : digitalQuestions;
+            currentQuestionIndex = 0;
+            answers = {};
+            
+            // Hide selection, show question container
+            document.getElementById('diagnosisSelection').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'block';
+            
+            // Start first question
+            renderQuestion(currentQuestionIndex);
+            updateProgress();
+        }
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            renderQuestion(currentQuestionIndex);
-            updateProgress();
+            // Show diagnosis selection by default
+            document.getElementById('diagnosisSelection').style.display = 'block';
+            document.getElementById('questionContainer').style.display = 'none';
         });
         
         // Render Question
         function renderQuestion(index) {
-            if (index >= questions.length) {
+            if (index >= currentQuestions.length) {
                 calculateResults();
                 return;
             }
             
-            const q = questions[index];
+            const q = currentQuestions[index];
             const container = document.getElementById('questionContainer');
+            
+            // Add legal reference badge if available
+            const legalBadge = q.legalRef ? `
+                <div class="bg-blue-50 border-l-4 border-blue-500 px-4 py-2 mb-4">
+                    <p class="text-xs text-blue-700">
+                        <i class="fas fa-gavel mr-2"></i>
+                        <strong>根拠法令：</strong> ${q.legalRef}
+                    </p>
+                </div>
+            ` : '';
             
             container.innerHTML = `
                 <div class="question-card">
                     <div class="flex items-center justify-between mb-6">
-                        <span class="text-sm text-gray-500 font-bold uppercase">Question ${index + 1}/${questions.length}</span>
+                        <span class="text-sm text-gray-500 font-bold uppercase">Question ${index + 1}/${currentQuestions.length}</span>
                         <span class="text-xs text-gray-600 uppercase tracking-wider">${q.category}</span>
                     </div>
-                    <h2 class="text-2xl font-black mb-8">${q.question}</h2>
+                    <h2 class="text-2xl font-black mb-4">${q.question}</h2>
+                    ${legalBadge}
                     <div id="optionsContainer">
                         ${q.options.map((opt, i) => `
                             <div class="option-btn" onclick="selectOption(${index}, ${i}, ${opt.value}, '${opt.weight}')">
@@ -617,7 +739,7 @@
         
         // Select Option
         function selectOption(questionIndex, optionIndex, value, weight) {
-            const q = questions[questionIndex];
+            const q = currentQuestions[questionIndex];
             answers[q.id] = { value, weight, category: q.category };
             
             // Visual Feedback
@@ -648,59 +770,82 @@
             showLoading('最終スコア算出中...');
             
             setTimeout(() => {
-                // Calculate Unpaid Risk Score
-                let K_legal = 0, C_credit = 0, P_process = 0;
-                let legalCount = 0, creditCount = 0, processCount = 0;
+                let S_unpaid = 0, S_digital = 0;
                 
-                Object.entries(answers).forEach(([key, answer]) => {
-                    if (answer.category === 'legal') {
-                        K_legal += answer.value;
-                        legalCount++;
-                    } else if (answer.category === 'credit') {
-                        C_credit += answer.value;
-                        creditCount++;
-                    } else if (answer.category === 'process') {
-                        P_process += answer.value;
-                        processCount++;
-                    }
-                });
-                
-                K_legal = legalCount > 0 ? K_legal / legalCount : 0;
-                C_credit = creditCount > 0 ? C_credit / creditCount : 0;
-                P_process = processCount > 0 ? P_process / processCount : 0;
-                
-                const S_unpaid = (0.45 * K_legal + 0.35 * C_credit + 0.20 * P_process) * 100;
-                
-                // Calculate Digital Asset Risk
-                const assetValue = answers.digital_asset_value?.value || 100;
-                const accessibilityScore = answers.access_management?.value || 0.5;
-                const planScore = answers.succession_plan?.value || 0.5;
-                
-                const taxCoefficient = 0.8; // 2026年税制：時価80%評価
-                const S_digital = (assetValue * (1 / accessibilityScore) * (1 / planScore) * taxCoefficient) / 10;
-                
-                // Display Results
-                hideLoading();
-                document.getElementById('questionContainer').style.display = 'none';
-                document.getElementById('resultsSection').style.display = 'block';
-                
-                // Animate Scores
-                animateScore('unpaidScore', S_unpaid);
-                animateScore('digitalScore', S_digital);
-                
-                // Update Risk Meters
-                updateRiskMeter('unpaidIndicator', S_unpaid);
-                updateRiskMeter('digitalIndicator', S_digital);
-                
-                // Update Risk Levels
-                document.getElementById('unpaidLevel').textContent = getRiskLevel(S_unpaid);
-                document.getElementById('digitalLevel').textContent = getRiskLevel(S_digital);
-                
-                // Display XAI Calculations
-                displayXAICalculations(K_legal, C_credit, P_process, S_unpaid, assetValue, accessibilityScore, planScore, S_digital);
-                
-                // Generate Prescription
-                generatePrescription(S_unpaid, S_digital);
+                if (diagnosisType === 'unpaid') {
+                    // Calculate Unpaid Risk Score ONLY
+                    let K_legal = 0, C_credit = 0, P_process = 0;
+                    let legalCount = 0, creditCount = 0, processCount = 0;
+                    
+                    Object.entries(answers).forEach(([key, answer]) => {
+                        if (answer.category === 'legal') {
+                            K_legal += answer.value;
+                            legalCount++;
+                        } else if (answer.category === 'credit') {
+                            C_credit += answer.value;
+                            creditCount++;
+                        } else if (answer.category === 'process') {
+                            P_process += answer.value;
+                            processCount++;
+                        }
+                    });
+                    
+                    K_legal = legalCount > 0 ? K_legal / legalCount : 0;
+                    C_credit = creditCount > 0 ? C_credit / creditCount : 0;
+                    P_process = processCount > 0 ? P_process / processCount : 0;
+                    
+                    S_unpaid = (0.45 * K_legal + 0.35 * C_credit + 0.20 * P_process) * 100;
+                    
+                    // Display ONLY unpaid results
+                    hideLoading();
+                    document.getElementById('questionContainer').style.display = 'none';
+                    document.getElementById('resultsSection').style.display = 'block';
+                    
+                    // Hide digital asset section
+                    document.querySelectorAll('#resultsSection > .question-card > div')[1].style.display = 'none';
+                    
+                    // Animate Score
+                    animateScore('unpaidScore', S_unpaid);
+                    updateRiskMeter('unpaidIndicator', S_unpaid);
+                    document.getElementById('unpaidLevel').textContent = getRiskLevel(S_unpaid);
+                    
+                    // Display XAI for unpaid only
+                    displayUnpaidXAI(K_legal, C_credit, P_process, S_unpaid);
+                    
+                    // Generate Prescription
+                    generateUnpaidPrescription(S_unpaid);
+                    
+                } else if (diagnosisType === 'digital') {
+                    // Calculate Digital Asset Risk ONLY
+                    const assetValue = answers.digital_asset_value?.value || 100;
+                    const accessibilityScore = answers.access_management?.value || 0.5;
+                    const planScore = answers.succession_plan?.value || 0.5;
+                    const taxAwareness = answers.tax_awareness?.value || 0.5;
+                    
+                    const taxCoefficient = 0.8; // 2026年税制：時価80%評価
+                    // Factor in tax awareness to risk calculation
+                    const S_digital_base = (assetValue * (1 / accessibilityScore) * (1 / planScore) * taxCoefficient) / 10;
+                    S_digital = Math.min(S_digital_base * (1 + taxAwareness * 0.5), 100); // Tax unawareness increases risk
+                    
+                    // Display ONLY digital results
+                    hideLoading();
+                    document.getElementById('questionContainer').style.display = 'none';
+                    document.getElementById('resultsSection').style.display = 'block';
+                    
+                    // Hide unpaid risk section
+                    document.querySelectorAll('#resultsSection > .question-card > div')[0].style.display = 'none';
+                    
+                    // Animate Score
+                    animateScore('digitalScore', S_digital);
+                    updateRiskMeter('digitalIndicator', S_digital);
+                    document.getElementById('digitalLevel').textContent = getRiskLevel(S_digital);
+                    
+                    // Display XAI for digital only
+                    displayDigitalXAI(assetValue, accessibilityScore, planScore, taxAwareness, S_digital);
+                    
+                    // Generate Prescription
+                    generateDigitalPrescription(S_digital);
+                }
                 
                 updateProgress(100);
             }, 2000);
@@ -734,6 +879,174 @@
             if (score < 30) return '✓ 低リスク（安全圏）';
             if (score < 60) return '⚠ 中リスク（要注意）';
             return '🚨 高リスク（即時対策必要）';
+        }
+        
+        // Display Unpaid Risk XAI
+        function displayUnpaidXAI(K, C, P, S_unpaid) {
+            document.getElementById('unpaidCalculation').innerHTML = `
+                <div class="calculation-step">
+                    <p class="text-gray-700"><strong>K_legal (契約強度)</strong> = ${K.toFixed(2)}</p>
+                    <p class="text-gray-700"><strong>C_credit (信用リスク)</strong> = ${C.toFixed(2)}</p>
+                    <p class="text-gray-700"><strong>P_process (管理リスク)</strong> = ${P.toFixed(2)}</p>
+                    <p class="text-gray-700 mt-3">
+                        <strong>S_unpaid</strong> = 0.45 × ${K.toFixed(2)} + 0.35 × ${C.toFixed(2)} + 0.20 × ${P.toFixed(2)}
+                    </p>
+                    <p class="text-green-600 font-bold text-xl mt-2">= ${S_unpaid.toFixed(1)}点</p>
+                </div>
+            `;
+            // Hide digital calculation section
+            const digitalCalcSection = document.querySelector('.formula-display:nth-of-type(2)');
+            if (digitalCalcSection) digitalCalcSection.style.display = 'none';
+        }
+        
+        // Display Digital Asset XAI
+        function displayDigitalXAI(V, A, Pl, Tax, S_digital) {
+            document.getElementById('digitalCalculation').innerHTML = `
+                <div class="calculation-step">
+                    <p class="text-gray-700"><strong>V (資産価値)</strong> = ${V.toFixed(0)}万円</p>
+                    <p class="text-gray-700"><strong>A (アクセス難易度)</strong> = ${A.toFixed(2)}</p>
+                    <p class="text-gray-700"><strong>Pl (計画性欠如)</strong> = ${Pl.toFixed(2)}</p>
+                    <p class="text-gray-700"><strong>Tax (税務認識)</strong> = ${Tax.toFixed(2)}</p>
+                    <p class="text-gray-700 mt-3">
+                        <strong>S_digital</strong> = (${V.toFixed(0)} × 1/${A.toFixed(2)} × 1/${Pl.toFixed(2)} × 0.8 × (1 + ${Tax.toFixed(2)} × 0.5)) / 10
+                    </p>
+                    <p class="text-blue-600 font-bold text-xl mt-2">= ${S_digital.toFixed(1)}点</p>
+                </div>
+            `;
+            // Hide unpaid calculation section
+            const unpaidCalcSection = document.querySelector('.formula-display:nth-of-type(1)');
+            if (unpaidCalcSection) unpaidCalcSection.style.display = 'none';
+        }
+        
+        // Generate Unpaid Prescription
+        function generateUnpaidPrescription(S_unpaid) {
+            const container = document.getElementById('prescriptionSection');
+            const isHighRisk = S_unpaid >= 60;
+            
+            container.innerHTML = `
+                <div class="prescription-card ${isHighRisk ? 'warning' : 'safe'}">
+                    <h2 class="text-3xl font-black mb-6 uppercase flex items-center gap-3">
+                        <i class="fas fa-prescription ${isHighRisk ? 'text-red-500' : 'text-green-500'}"></i>
+                        改善命令（Prescription）
+                    </h2>
+                    
+                    ${isHighRisk ? `
+                        <div class="bg-red-100 border-2 border-red-500 p-6 mb-6">
+                            <p class="text-red-700 font-bold text-lg mb-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                重大な未払いリスクが検出されました
+                            </p>
+                            <p class="text-sm text-gray-700">
+                                現在の状況では、法的紛争発生時の立証が困難です。
+                                専門家への相談を強く推奨します。
+                            </p>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold mb-4 text-red-600">【緊急対策】即時実行を推奨</h3>
+                        <a href="https://www.rentracks.jp/" target="_blank" class="affiliate-btn critical">
+                            <i class="fas fa-gavel mr-3"></i>
+                            弁護士無料相談に申し込む（24時間以内推奨）
+                            <i class="fas fa-external-link-alt ml-3"></i>
+                        </a>
+                        <p class="text-xs text-gray-600 mt-2">
+                            ※ 初回相談無料。フリーランス案件専門の弁護士が対応します。
+                        </p>
+                    ` : `
+                        <div class="bg-green-100 border-2 border-green-500 p-6 mb-6">
+                            <p class="text-green-700 font-bold text-lg mb-2">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                未払いリスクは管理範囲内です
+                            </p>
+                            <p class="text-sm text-gray-700">
+                                現状の管理体制を継続しつつ、予防的対策を推奨します。
+                            </p>
+                        </div>
+                    `}
+                    
+                    <h3 class="text-xl font-bold mb-4 mt-8 text-green-600">
+                        【予防策】キャッシュフロー改善（ファクタリングサービス）
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <a href="https://freenance.net/" target="_blank" class="affiliate-btn">
+                            <i class="fas fa-hand-holding-usd mr-2"></i>
+                            FREENANCE即日払い
+                        </a>
+                        <a href="https://labol.jp/" target="_blank" class="affiliate-btn">
+                            <i class="fas fa-bolt mr-2"></i>
+                            labol（最短60分）
+                        </a>
+                        <a href="https://ququmo.net/" target="_blank" class="affiliate-btn">
+                            <i class="fas fa-rocket mr-2"></i>
+                            QuQuMo（手数料1%〜）
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Generate Digital Prescription
+        function generateDigitalPrescription(S_digital) {
+            const container = document.getElementById('prescriptionSection');
+            const isHighRisk = S_digital >= 60;
+            
+            container.innerHTML = `
+                <div class="prescription-card ${isHighRisk ? 'warning' : 'safe'}">
+                    <h2 class="text-3xl font-black mb-6 uppercase flex items-center gap-3">
+                        <i class="fas fa-prescription ${isHighRisk ? 'text-red-500' : 'text-green-500'}"></i>
+                        改善命令（Prescription）
+                    </h2>
+                    
+                    ${isHighRisk ? `
+                        <div class="bg-red-100 border-2 border-red-500 p-6 mb-6">
+                            <p class="text-red-700 font-bold text-lg mb-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                デジタル資産の承継リスクが高い状態です
+                            </p>
+                            <p class="text-sm text-gray-700">
+                                アクセス権限の喪失により、相続人が資産を承継できない可能性があります。
+                                税理士・専門家への相談を強く推奨します。
+                            </p>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold mb-4 text-red-600">【緊急対策】デジタル資産管理の専門家へ相談</h3>
+                        <a href="https://www.rentracks.jp/" target="_blank" class="affiliate-btn critical">
+                            <i class="fas fa-user-shield mr-3"></i>
+                            税理士・デジタル遺産専門家に相談（無料）
+                            <i class="fas fa-external-link-alt ml-3"></i>
+                        </a>
+                        <p class="text-xs text-gray-600 mt-2">
+                            ※ 2026年税制対応。暗号資産・NFT・ドメインの相続税評価に強い専門家を紹介します。
+                        </p>
+                    ` : `
+                        <div class="bg-green-100 border-2 border-green-500 p-6 mb-6">
+                            <p class="text-green-700 font-bold text-lg mb-2">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                デジタル資産の承継準備は良好です
+                            </p>
+                            <p class="text-sm text-gray-700">
+                                現状の管理体制を継続しつつ、定期的な見直しを推奨します。
+                            </p>
+                        </div>
+                    `}
+                    
+                    <h3 class="text-xl font-bold mb-4 mt-8 text-blue-600">
+                        【推奨】デジタル遺産管理サービス
+                    </h3>
+                    
+                    <div class="bg-white border-2 border-gray-300 p-6">
+                        <h4 class="font-bold mb-3 text-gray-800">
+                            <i class="fas fa-key mr-2 text-blue-500"></i>
+                            パスワード管理・デジタル遺言サービス
+                        </h4>
+                        <ul class="text-sm text-gray-700 space-y-2 ml-6 list-disc">
+                            <li>1Password / LastPass（パスワード管理）</li>
+                            <li>デジタル遺産信託サービス（弁護士監修）</li>
+                            <li>暗号資産相続サポート（税理士連携）</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
         }
         
         // Display XAI Calculations
@@ -889,7 +1202,7 @@
         
         // Update Progress
         function updateProgress(percentage = null) {
-            const progress = percentage !== null ? percentage : (currentQuestionIndex / questions.length) * 100;
+            const progress = percentage !== null ? percentage : (currentQuestionIndex / currentQuestions.length) * 100;
             document.getElementById('progressBar').style.width = `${progress}%`;
         }
     </script>
